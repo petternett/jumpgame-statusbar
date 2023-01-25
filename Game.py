@@ -6,21 +6,28 @@ from Keyboard import Keyboard
 from Enemy import Enemy
 
 
+# TODO hit collision
+# TODO mouse input
+# TODO high score?
+# TODO colors? (see drawille github issues)
+# TODO split classes into files
+# TODO threading on input (see new_press_event in railway)
 class Game:
     def __init__(self):
         self.fps   = 30
-        self.delay = 1.0 / self.fps
+        self.delay = 1.0/self.fps
 
-        self.height = 3  # 3
-        self.width = 50
+        self.height   = 3
+        self.pa_width = 50  # play area width
 
-        self.running = True
+        self.running    = True
         self.debug_text = None
-        self.player_offset = 10
+        self.score      = 0
 
+        self.player_offset = 10
         self.player = Player(self)
+        self.kb     = Keyboard(self)
         self.enemies = []
-        self.kb = Keyboard(self)
 
 
     def debug(self, text):
@@ -30,6 +37,7 @@ class Game:
         self.running = False
 
     def check_collision(self, player_pos, bar):
+        # TODO
         pass
 
     """
@@ -61,8 +69,8 @@ class Game:
             # Draw "borders"
             c.set(0,0)
             c.set(0,self.height)
-            c.set(self.width, self.height)
-            c.set(self.width, 0)
+            c.set(self.pa_width, self.height)
+            c.set(self.pa_width, 0)
 
             # Draw player
             for x,y in self.player.coords:
@@ -77,15 +85,19 @@ class Game:
                 enemy.pos_x -= 1
                 if enemy.pos_x <= 0:
                     self.enemies.remove(enemy)
+                
+                if enemy.pos_x == self.player.pos_x-1:
+                    self.score += 1
 
 
             # Draw ground, except around player
-            # for x,y in line(0, self.height, self.width, self.height):
+            # for x,y in line(0, self.height, self.pa_width, self.height):
             #     if x not in range(self.player.pos_x-1, self.player.pos_x+3):
             #         c.set(x,y)
 
             f = c.frame()+'\n'
             stdscr.addstr(0, 0, f)
+            stdscr.addstr(0, ((self.pa_width)//2)+2, f"Score: {self.score}")
 
             if self.debug_text: stdscr.addstr(0, 0, f"DEBUG: {self.debug_text}")
 

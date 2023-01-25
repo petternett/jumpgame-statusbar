@@ -2,11 +2,6 @@
 # -*- coding: utf-8 -*-
 # Author: Petter Juterud Barhaugen (petter@petternett.no)
 
-# TODO hit collision
-# TODO mouse input
-# TODO colors? (see drawille github issues)
-# TODO split classes into files
-# TODO threading on input (see new_press_event in railway)
 import curses
 import Game
 

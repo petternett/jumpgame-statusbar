@@ -12,4 +12,4 @@ class Enemy:
         self.distance_to_roof = game.height - len(self.map) + 1
         self.coords = map_to_coords(self.map)
         self.pos_y = self.distance_to_roof
-        self.pos_x = game.width
+        self.pos_x = game.pa_width
