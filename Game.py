@@ -9,6 +9,7 @@ from Enemy import Enemy
 # TODO hit collision
 # TODO mouse input
 # TODO high score?
+# TODO increase spawn rate of enemies over time
 # TODO colors? (see drawille github issues)
 # TODO split classes into files
 # TODO threading on input (see new_press_event in railway)
@@ -62,6 +63,8 @@ class Game:
 
             cur_time = time()
 
+            # TODO increase spawn rate of enemies over time
+            # TODO implement random time between enemies (always enough room to avoid)
             if len(self.enemies) == 0:
                 self.enemies.append(Enemy(self))
 
@@ -86,8 +89,14 @@ class Game:
                 if enemy.pos_x <= 0:
                     self.enemies.remove(enemy)
                 
+                # If just behind player, +1 score
                 if enemy.pos_x == self.player.pos_x-1:
                     self.score += 1
+
+                # If in the middle of PA, spawn enemy
+                if enemy.pos_x == (self.pa_width//2):
+                    self.enemies.append(Enemy(self))
+
 
 
             # Draw ground, except around player
