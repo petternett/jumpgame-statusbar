@@ -4,7 +4,7 @@ from sys import exit
 from Player import Player
 from Keyboard import Keyboard
 from Enemy import Enemy
-from Text import img_to_font
+from Text import Text
 from Common import map_to_coords
 
 
@@ -30,6 +30,7 @@ class Game:
         self.player_offset = 10
         self.player = Player(self)
         self.kb     = Keyboard(self)
+        self.text   = Text("font.png")  # Modify this to change font (must be 3x4 chars)
         self.enemies = []
 
 
@@ -52,13 +53,6 @@ class Game:
     def run(self, stdscr):
         c = Canvas()
         stdscr.refresh()
-
-        # Create font array
-        img_arr = img_to_font("font.png")
-        m = map_to_coords(img_arr[ord('M')])
-        a = map_to_coords(img_arr[ord('A')])
-        r = map_to_coords(img_arr[ord('R')])
-        i = map_to_coords(img_arr[ord('I')])
 
         while self.running:
 
@@ -106,32 +100,10 @@ class Game:
                 if enemy.pos_x == (self.pa_width//2):
                     self.enemies.append(Enemy(self))
 
-            # Draw a letter (test)
-            test_offs = 20
-            for x,y in m:
-                c.set(x+test_offs,y)
-            test_offs += 4
-
-            for x,y in a:
-                c.set(x+test_offs,y)
-            test_offs += 4
-
-            for x,y in r:
-                c.set(x+test_offs,y)
-            test_offs += 4
-
-            for x,y in i:
-                c.set(x+test_offs,y)
-            test_offs += 4
-
-            for x,y in a:
-                c.set(x+test_offs,y)
-            test_offs += 4
-
-
-
-
-
+            # Draw a word (test)
+            to_draw = self.text.to_string("TEST", self.enemies[0].pos_x)
+            for x,y in to_draw:
+                c.set(x,y)
 
             # Draw ground, except around player
             # for x,y in line(0, self.height, self.pa_width, self.height):
@@ -140,7 +112,7 @@ class Game:
 
             f = c.frame()+'\n'
             stdscr.addstr(0, 0, f)
-            stdscr.addstr(0, ((self.pa_width)//2)+2, f"Score: {self.score}")
+            stdscr.addstr(0, ((self.pa_width)//2)+2, f"{self.score}")
 
             if self.debug_text: stdscr.addstr(0, 0, f"DEBUG: {self.debug_text}")
 
