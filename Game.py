@@ -4,6 +4,8 @@ from sys import exit
 from Player import Player
 from Keyboard import Keyboard
 from Enemy import Enemy
+from Text import img_to_font
+from Common import map_to_coords
 
 
 # TODO hit collision
@@ -51,6 +53,13 @@ class Game:
         c = Canvas()
         stdscr.refresh()
 
+        # Create font array
+        img_arr = img_to_font("font.png")
+        m = map_to_coords(img_arr[ord('M')])
+        a = map_to_coords(img_arr[ord('A')])
+        r = map_to_coords(img_arr[ord('R')])
+        i = map_to_coords(img_arr[ord('I')])
+
         while self.running:
 
             self.player.vel_y += self.player.get_gravity()
@@ -96,6 +105,31 @@ class Game:
                 # If in the middle of PA, spawn enemy
                 if enemy.pos_x == (self.pa_width//2):
                     self.enemies.append(Enemy(self))
+
+            # Draw a letter (test)
+            test_offs = 20
+            for x,y in m:
+                c.set(x+test_offs,y)
+            test_offs += 4
+
+            for x,y in a:
+                c.set(x+test_offs,y)
+            test_offs += 4
+
+            for x,y in r:
+                c.set(x+test_offs,y)
+            test_offs += 4
+
+            for x,y in i:
+                c.set(x+test_offs,y)
+            test_offs += 4
+
+            for x,y in a:
+                c.set(x+test_offs,y)
+            test_offs += 4
+
+
+
 
 
 
